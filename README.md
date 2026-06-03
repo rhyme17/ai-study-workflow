@@ -127,12 +127,3 @@ After editing the canonical skill under `skills/ai-study-workflow`, sync the Cod
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/sync-agent-skills.ps1
 ```
-
-## Upload Notes
-
-Before pushing to GitHub:
-
-1. Check that `local-materials/` is ignored.
-2. Do not commit original course PPTX/PDF files.
-3. Do not commit rendered slide/page PNGs unless they are public and intentionally included.
-4. Review generated study content for copyrighted or private course text.
