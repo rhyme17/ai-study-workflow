@@ -1,0 +1,39 @@
+# Local course material and generated test output
+local-materials/
+ai-study-workflow-test/
+*.ppt
+*.pptx
+*.pdf
+**/rendered-pages/
+**/rendered-slides/
+**/*rendered*/
+
+# Generated source extraction and card outputs
+**/source-report.md
+**/source-report.json
+**/source-text.txt
+**/pdf-report.md
+**/pdf-report.json
+**/pdf-text.txt
+**/*-inspection.json
+**/*-inspection.md
+**/*-extracted.txt
+**/cards.csv
+**/*-cards.csv
+**/*-cards.json
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Local agent memory and personal settings
+CLAUDE.local.md
+*.local.md
+.env
+.env.*
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,47 @@
+name: ai-finals-review-workflow
+version: 1
+goal: "Use AI to improve university final-exam revision without replacing student thinking."
+
+inputs:
+  - syllabus
+  - lecture_notes
+  - assignment_feedback
+  - allowed_past_papers
+  - exam_dates
+  - course_ai_policy
+
+artifacts:
+  course_dashboard: templates/course-dashboard.md
+  daily_review_log: templates/daily-review-log.md
+  prompt_library: templates/prompt-library.md
+  anki_card_template: templates/anki-card-template.csv
+
+rules:
+  - "Check each course AI policy before uploading or generating content."
+  - "AI may explain, quiz, critique, and format; the student must answer first."
+  - "Do not use AI output as final assessment text unless explicitly allowed."
+  - "Every generated card or summary needs a source tag."
+  - "Use human confirmation for ambiguous concepts, exam scope, and grading standards."
+
+loop:
+  - step: course_triage
+    output: "topic table with dates, weights, confidence, and source links"
+  - step: closed_book_diagnostic
+    output: "weakness list and first error taxonomy"
+  - step: ai_tutoring
+    output: "gap questions, corrected explanation, one transfer problem"
+  - step: card_generation
+    output: "short source-tagged recall cards"
+  - step: spaced_review
+    output: "daily review completion and hard-card list"
+  - step: timed_mock
+    output: "score, time, error categories, next-day priorities"
+  - step: human_checkpoint
+    output: "questions for office hours, TA, professor, or study group"
+
+done_when:
+  - "Can explain each core concept without notes."
+  - "Can solve unseen problems under time pressure."
+  - "Can identify the top error patterns and the fix for each."
+  - "Final 24 hours are review-only, not first-time learning."
+

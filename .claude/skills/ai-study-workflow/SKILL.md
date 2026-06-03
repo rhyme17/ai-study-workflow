@@ -1,0 +1,106 @@
+---
+name: ai-study-workflow
+description: Build AI-assisted study workflows for university learning. Use when the user asks to improve study efficiency, prepare for finals or exams, review a course, learn new material, make a study plan, generate practice questions, diagnose weak points, create Anki/FSRS flashcards, or run AI tutoring without replacing student thinking. Triggers include 期末复习, 备考, 学习效率, 新知识学习, AI 学习助手, 错题, Anki, 间隔复习, and 苏格拉底式辅导.
+---
+
+# AI Study Workflow
+
+Use this skill to turn course material into a concrete study loop. Prefer fast, verifiable learning outcomes over broad educational advice.
+
+## Mode Selection
+
+Choose one mode first:
+
+- **Review mode**: The user has already learned the material and wants exam performance, weak-point diagnosis, mock tests, or final-review planning. Read `references/review-mode.md`.
+- **Learning mode**: The user is learning new material from scratch or building first-pass understanding. Read `references/learning-mode.md`.
+- **Mixed mode**: If the user has both goals, start with review mode for imminent exams; otherwise start with learning mode and schedule review checkpoints.
+
+Before choosing a mode for PDFs, slides, notes, or other source files, read `references/source-ingestion.md` and perform a quick source-quality pass. If the course's AI policy, exam date, or available materials are unclear, state assumptions and proceed with the safest minimal workflow. Do not upload or request restricted exams, private data, or forbidden assessment materials.
+
+## Fast UX Entry
+
+For a source-based first response, prefer a short "front door" instead of a full report:
+
+1. Source card: file type, scope, usable text, visual/uncertain caveats.
+2. Mode choice: learning, review, or material generation.
+3. One immediate task: a short diagnostic, prerequisite check, or first learning block.
+
+Do not expand both learning mode and review mode unless the user asks for both. Keep the first task answer-free; ask the student to respond before revealing solutions.
+
+## Operating Rules
+
+1. Make the student answer first before AI gives a solution.
+2. Use AI for explanation, questioning, practice generation, feedback, scheduling, and card formatting.
+3. Do not use AI to replace closed-book practice, final answers, or institution policy.
+4. Treat AI outputs as drafts until checked against course materials, rubrics, official solutions, or instructors.
+5. Convert mistakes into short active-recall cards with source tags.
+6. Mark uncertain, sparse, conflicting, or visually extracted source content as `needs human check` instead of presenting it as fact.
+7. In interactive sessions, stop at diagnostic, near-transfer, and mock-test steps; ask the student to answer before revealing solutions.
+
+## Standard Outputs
+
+For a full workflow response or requested artifact, produce:
+
+- the chosen mode and assumptions
+- a compact plan for today
+- a repeatable loop for the next study sessions
+- the exact prompts or templates the student should use
+- the verification signal that proves learning improved
+
+Use templates from `assets/` when creating files for the user:
+
+- `assets/fast-entry-template.md`
+- `assets/course-dashboard.md`
+- `assets/daily-review-log.md`
+- `assets/knowledge-map.md`
+- `assets/anki-card-template.csv`
+
+Use `references/prompt-library.md` when the user asks for prompts or when a workflow step needs a concrete prompt.
+
+Use `references/quality-rubric.md` when deciding whether a workflow is effective.
+
+Use `references/source-ingestion.md` when the user provides PDFs, slides, lecture notes, screenshots, OCR text, or mixed course materials.
+
+For PDF course material, prefer the PDF inspector before generating study content:
+
+```bash
+python scripts/inspect_pdf_source.py course.pdf --markdown-out source-report.md --json-out source-report.json --text-out source-text.txt
+```
+
+Then render pages that need visual checks:
+
+```bash
+python scripts/render_pdf_pages.py course.pdf --from-report source-report.json --flag private_use_symbols --flag image_dependent --max-pages 10 --out-dir rendered-pages --manifest-out rendered-pages/manifest.json
+```
+
+For PPTX course material, prefer the PPTX inspector before generating study content:
+
+```bash
+python scripts/inspect_pptx_source.py course.pptx --markdown-out source-report.md --json-out source-report.json --text-out source-text.txt
+```
+
+Then render slides that need visual checks:
+
+```bash
+python scripts/render_pptx_slides.py course.pptx --from-report source-report.json --flag image_heavy --flag graphic_content --max-slides 10 --out-dir rendered-slides --manifest-out rendered-slides/manifest.json
+```
+
+## Optional Anki CSV Script
+
+When the user has card data in JSON or JSONL, use:
+
+```bash
+python scripts/make_anki_csv.py cards.json --out anki.csv
+```
+
+Input cards should include `front` and `back`; optional fields are `deck`, `tags`, `type`, and `source`.
+
+## Minimal Examples
+
+User: "用 AI 帮我 7 天复习概率论期末。"
+
+Response path: review mode -> course triage -> closed-book diagnostic -> weak-point tutoring -> Anki cards -> timed mock schedule.
+
+User: "我想从零学贝叶斯公式。"
+
+Response path: learning mode -> prerequisite check -> concept map -> worked example -> Socratic check -> transfer problem -> spaced review cards.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Study Workflow"
+  short_description: "AI workflows for review and new learning"
+  default_prompt: "Use $ai-study-workflow to build a focused study workflow for my course."
