@@ -10,22 +10,30 @@ Turn lecture PDFs and PPTX files into closed-book diagnostics, targeted weak-poi
 
 ## Why This Exists
 
-Most students ask AI to summarize lecture slides. That feels productive, but it is still passive review.
+Most students ask AI to summarize lecture slides.
+That feels productive, but it is still passive review.
 
-AI Study Workflow is an agent skill that makes the student answer first. It inspects course files, creates a closed-book diagnostic, waits for the student's answers, grades strictly, repairs weak points, and turns real mistakes into spaced-repetition cards.
+AI Study Workflow is an agent skill that makes the student answer first.
+It inspects course files, creates a closed-book diagnostic, waits for the student's answers,
+grades strictly, repairs weak points, and turns real mistakes into spaced-repetition cards.
 
 ```text
 source inspection -> closed-book diagnostic -> grading feedback -> weak-point repair -> Anki cards
 ```
 
-It is not a generic "summarize my PPT" prompt. The default flow is active recall: the agent asks questions first, withholds answers, grades the student's attempt, and only then explains or generates cards.
+It is not a generic "summarize my PPT" prompt.
+The default flow is active recall: the agent asks questions first, withholds answers,
+grades the student's attempt, and only then explains or generates cards.
 
 ## 30-Second Start
 
 Attach a course PDF/PPTX and say:
 
 ```text
-Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed-book diagnostic. Do not reveal answers until I respond.
+Use ai-study-workflow.
+Inspect the source first.
+Then give me a 10-minute closed-book diagnostic.
+Do not reveal answers until I respond.
 ```
 
 中文：
@@ -44,7 +52,9 @@ Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed
 
 ## Project Status
 
-This is an experimental but usable workflow for AI-assisted studying. It is designed for iterative use with real course materials and should be checked against the original source when content is visual, formula-heavy, or ambiguous.
+This is an experimental but usable workflow for AI-assisted studying.
+It is designed for iterative use with real course materials and should be checked against
+the original source when content is visual, formula-heavy, or ambiguous.
 
 ## Example Output
 
@@ -107,7 +117,8 @@ next drill:
 card candidates:
 - source: slide-56
 - front: When is throughput lower than a link's bandwidth?
-- back: When another link, sender/receiver limit, congestion, or protocol overhead becomes the bottleneck.
+- back: When another link, sender/receiver limit, congestion,
+  or protocol overhead becomes the bottleneck.
 ```
 
 ## What It Does
@@ -155,7 +166,8 @@ Use `AGENTS.md` or `GEMINI.md` as the project entry point, then load:
 skills/ai-study-workflow/SKILL.md
 ```
 
-Generic agents that support the Agent Skills convention can use the canonical skill directory directly.
+Generic agents that support the Agent Skills convention can use the canonical skill
+directory directly.
 
 ## Repository Layout
 
@@ -174,7 +186,9 @@ Generic agents that support the Agent Skills convention can use the canonical sk
 └── local-materials/                   # Ignored local course files and generated outputs
 ```
 
-`skills/ai-study-workflow` is the source of truth. The `.codex` and `.claude` copies exist so those tools can discover the skill from their native project-level locations.
+`skills/ai-study-workflow` is the source of truth.
+The `.codex` and `.claude` copies exist so those tools can discover the skill from
+their native project-level locations.
 
 ## Working With Course Files
 
@@ -184,7 +198,8 @@ Put local PPTX/PDF files under:
 local-materials/course-files/
 ```
 
-That directory is ignored by Git. See [docs/usage-guide.md](docs/usage-guide.md) for full commands and examples.
+That directory is ignored by Git.
+See [docs/usage-guide.md](docs/usage-guide.md) for full commands and examples.
 
 ## Validate the Skill Scripts
 
@@ -201,7 +216,8 @@ python -m py_compile `
 
 ## Sync Adapter Copies
 
-After editing the canonical skill under `skills/ai-study-workflow`, sync the Codex and Claude copies:
+After editing the canonical skill under `skills/ai-study-workflow`, sync the Codex and
+Claude copies:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/sync-agent-skills.ps1
@@ -211,7 +227,9 @@ powershell -ExecutionPolicy Bypass -File scripts/sync-agent-skills.ps1
 
 Current prepared public version: `v0.1.0`.
 
-See [CHANGELOG.md](CHANGELOG.md) for release notes and [docs/repository-settings.md](docs/repository-settings.md) for recommended GitHub metadata, topics, and social preview settings.
+See [CHANGELOG.md](CHANGELOG.md) for release notes and
+[docs/repository-settings.md](docs/repository-settings.md) for recommended GitHub
+metadata, topics, and social preview settings.
 
 ## License
 

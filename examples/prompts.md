@@ -1,12 +1,15 @@
 # Example Prompts
 
-## Fast Entry
+## 30-Second Start
 
 ```text
-Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed-book diagnostic. Do not reveal answers until I respond.
+Use ai-study-workflow.
+Inspect the source first.
+Then give me a 10-minute closed-book diagnostic.
+Do not reveal answers until I respond.
 ```
 
-## 期末复习
+## Final Exam Review
 
 ```text
 使用 ai-study-workflow，读取这个课件。我走期末复习模式。
@@ -14,7 +17,7 @@ Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed
 不要给答案。等我回答后再评分、归因、安排下一步。
 ```
 
-## 新知识学习
+## New Topic Learning
 
 ```text
 使用 ai-study-workflow，读取这个课件。我走新知识学习模式。
@@ -26,5 +29,13 @@ Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed
 
 ```text
 Render and inspect the slides marked image-heavy or graphic-content.
-Use visual-derived notes only with slide source tags, and mark uncertain diagram details as needs human check.
+Use visual-derived notes only with slide source tags.
+Mark uncertain diagram details as needs human check.
+```
+
+## Anki Generation
+
+```text
+Turn my graded mistakes into Anki-ready CSV rows.
+Use one card per idea, keep each source tag, and mark uncertain cards as needs human check.
 ```

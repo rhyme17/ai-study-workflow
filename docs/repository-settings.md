@@ -4,11 +4,17 @@ These settings help the project communicate its value clearly on GitHub.
 
 ## Description
 
-```text
 Active-recall AI study workflow for course PDFs/PPTX, final review, diagnostics, weak-point repair, and Anki cards.
-```
 
 ## Topics
+
+Comma-separated:
+
+```text
+ai-study, active-recall, spaced-repetition, anki, exam-review, university, agent-skills, codex, claude-code, gemini-cli, pdf, pptx
+```
+
+One per line:
 
 ```text
 ai-study
@@ -37,7 +43,7 @@ Use a simple cover image with this message:
 
 ```text
 AI Study Workflow
-PDF/PPTX -> Diagnostic -> Weak-Point Repair -> Anki
+PDF/PPTX → Diagnostic → Weak-Point Repair → Anki
 ```
 
 Suggested asset in this repository:
@@ -48,13 +54,15 @@ assets/social-preview.png
 
 ## Release
 
-Prepare a `v0.1.0` release with this title:
+Recommended first release: `v0.1.0`.
+
+Title:
 
 ```text
 v0.1.0 - Initial active-recall study workflow
 ```
 
-Suggested release notes:
+## Release Notes
 
 ```text
 Initial public version of ai-study-workflow.
