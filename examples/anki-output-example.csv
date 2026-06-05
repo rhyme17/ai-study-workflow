@@ -1,0 +1,4 @@
+deck,tags,type,front,back,source
+Computer Networking,chapter1 protocol,basic,What makes a protocol definition complete?,"Message format/order plus actions taken when messages are sent, received, or other events occur.",slide-protocol
+Computer Networking,chapter1 delay,basic,Why does queueing delay grow sharply when traffic intensity approaches 1?,"The arrival rate approaches service capacity, so the queue has little slack and waiting time rises rapidly.",slide-delay
+Computer Networking,chapter1 encapsulation,basic,What does encapsulation add at each layer?,"A layer-specific header that lets that layer implement its service for the higher-layer data.",slide-encapsulation
