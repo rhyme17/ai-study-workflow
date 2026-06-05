@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
   <title id="title">AI Study Workflow social preview</title>
-  <desc id="desc">An agent skill that turns course files into diagnostics, weak-point repair, and Anki cards.</desc>
+  <desc id="desc">An agent skill that turns PDF/PPTX into diagnostics, weak-point repair, and Anki cards.</desc>
   <rect width="1280" height="640" fill="#0f172a"/>
   <rect x="72" y="72" width="1136" height="496" rx="28" fill="#111827" stroke="#334155" stroke-width="2"/>
   <text x="112" y="154" fill="#38bdf8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700">AI Study Workflow</text>
   <text x="112" y="230" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="58" font-weight="800">Stop summarizing slides.</text>
   <text x="112" y="302" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="58" font-weight="800">Start active recall.</text>
-  <text x="112" y="374" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="29">Course files -> diagnostic quiz -> weak-point repair -> Anki cards</text>
+  <text x="112" y="374" fill="#cbd5e1" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="29">PDF/PPTX -> Diagnostic -> Weak-Point Repair -> Anki</text>
   <g transform="translate(112 434)" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700">
     <rect x="0" y="0" width="218" height="64" rx="16" fill="#1e293b" stroke="#475569"/>
     <text x="28" y="41" fill="#e2e8f0">Source card</text>
     <path d="M236 32H300" stroke="#64748b" stroke-width="4"/>
     <path d="M300 32l-14-10v20z" fill="#64748b"/>
     <rect x="322" y="0" width="230" height="64" rx="16" fill="#1e293b" stroke="#475569"/>
-    <text x="350" y="41" fill="#e2e8f0">Closed-book quiz</text>
+    <text x="374" y="41" fill="#e2e8f0">Diagnostic</text>
     <path d="M570 32H634" stroke="#64748b" stroke-width="4"/>
     <path d="M634 32l-14-10v20z" fill="#64748b"/>
     <rect x="656" y="0" width="230" height="64" rx="16" fill="#1e293b" stroke="#475569"/>
-    <text x="684" y="41" fill="#e2e8f0">Targeted repair</text>
+    <text x="684" y="41" fill="#e2e8f0">Weak-Point Repair</text>
     <path d="M904 32H968" stroke="#64748b" stroke-width="4"/>
     <path d="M968 32l-14-10v20z" fill="#64748b"/>
     <rect x="990" y="0" width="122" height="64" rx="16" fill="#0e7490" stroke="#67e8f9"/>

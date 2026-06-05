@@ -3,10 +3,7 @@
 ## Fast Entry
 
 ```text
-Use ai-study-workflow. Read the course file first.
-Start with a source card, then let me choose new learning, exam review, or material generation.
-If I do not specify a mode, default to exam review and give me a 10-minute closed-book diagnostic.
-Do not show answers until I respond.
+Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed-book diagnostic. Do not reveal answers until I respond.
 ```
 
 ## 期末复习

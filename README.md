@@ -4,9 +4,9 @@
 ![License](https://img.shields.io/github/license/rhyme17/ai-study-workflow)
 ![Status](https://img.shields.io/badge/status-experimental-orange)
 
-Turn lecture slides and PDFs into active-recall study sessions: diagnostic quiz first, weak-point repair second, Anki cards last.
+Turn lecture PDFs and PPTX files into closed-book diagnostics, targeted weak-point repair, and Anki cards.
 
-把课件/PDF 变成一套主动回忆复习流程：先闭卷诊断，再定位薄弱点，最后生成 Anki 卡片。
+把课件和 PDF 变成闭卷诊断、薄弱点补强和 Anki 卡片。
 
 ## Why This Exists
 
@@ -15,16 +15,44 @@ Most students ask AI to summarize lecture slides. That feels productive, but it 
 AI Study Workflow is an agent skill that makes the student answer first. It inspects course files, creates a closed-book diagnostic, waits for the student's answers, grades strictly, repairs weak points, and turns real mistakes into spaced-repetition cards.
 
 ```text
-source inspection -> mode choice -> closed-book diagnostic -> grading -> weak-point repair -> Anki cards
+source inspection -> closed-book diagnostic -> grading feedback -> weak-point repair -> Anki cards
+```
+
+It is not a generic "summarize my PPT" prompt. The default flow is active recall: the agent asks questions first, withholds answers, grades the student's attempt, and only then explains or generates cards.
+
+## 30-Second Start
+
+Attach a course PDF/PPTX and say:
+
+```text
+Use ai-study-workflow. Inspect the source first. Then give me a 10-minute closed-book diagnostic. Do not reveal answers until I respond.
+```
+
+中文：
+
+```text
+使用 ai-study-workflow。先检查课程 PDF/PPTX，再给我 10 分钟闭卷诊断题。不要在我回答前公布答案。
 ```
 
 ## Who Is This For?
 
-- Students who use AI to review lecture slides or PDFs.
-- People preparing for finals, quizzes, retakes, or certification exams.
-- Learners who want active recall instead of passive summaries.
+- Students reviewing lecture slides, PDFs, or course notes.
+- People preparing for finals or closed-book exams.
 - Users of Codex, Claude Code, Gemini CLI, or other file-based agents.
-- Anyone building reusable agent skills for study workflows.
+- Learners who want active recall instead of passive summaries.
+- People who want Anki-ready cards after diagnosis and correction.
+
+## Project Status
+
+This is an experimental but usable workflow for AI-assisted studying. It is designed for iterative use with real course materials and should be checked against the original source when content is visual, formula-heavy, or ambiguous.
+
+## Example Output
+
+See:
+
+- [Demo review session](examples/demo-review-session.md)
+- [Anki output example](examples/anki-output-example.csv)
+- [Reusable prompts](examples/prompts.md)
 
 ## Demo
 
@@ -82,8 +110,6 @@ card candidates:
 - back: When another link, sender/receiver limit, congestion, or protocol overhead becomes the bottleneck.
 ```
 
-See [examples/demo-review-session.md](examples/demo-review-session.md) for a complete example and [examples/anki-output-example.csv](examples/anki-output-example.csv) for sample card output.
-
 ## What It Does
 
 - Inspects PPTX and PDF course material before generating study content.
@@ -92,27 +118,6 @@ See [examples/demo-review-session.md](examples/demo-review-session.md) for a com
 - Supports new knowledge learning with prerequisite checks and chunked tutoring.
 - Generates targeted drills, mistake taxonomies, and Anki-ready CSV files.
 - Renders PPTX slides or PDF pages to PNG when visual inspection is needed.
-
-## Quick Start
-
-Use this prompt with an attached or local course file:
-
-```text
-Use ai-study-workflow. Read the course file first.
-Start with a source card, then let me choose new learning, exam review, or material generation.
-If I do not specify a mode, default to exam review and give me a 10-minute closed-book diagnostic.
-Do not show answers until I respond.
-```
-
-中文提示词：
-
-```text
-使用 ai-study-workflow，读取我提供的课程文件。
-先做资料卡，说明可用文本、需要看图的页、可能不可靠的地方。
-然后给我三种选择：新知识学习、期末复习、生成材料。
-如果我没有特别说明，默认选择期末复习，先给 10 分钟闭卷诊断题。
-不要给答案，等我回答后再评分和安排下一步。
-```
 
 ## Install and Use
 
@@ -201,6 +206,12 @@ After editing the canonical skill under `skills/ai-study-workflow`, sync the Cod
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/sync-agent-skills.ps1
 ```
+
+## Version
+
+Current prepared public version: `v0.1.0`.
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes and [docs/repository-settings.md](docs/repository-settings.md) for recommended GitHub metadata, topics, and social preview settings.
 
 ## License
 
