@@ -16,15 +16,43 @@ Use this before building a study workflow from PDFs, slides, lecture notes, scre
 4. Build a compact source map: page range -> topic.
 5. Mark uncertain evidence as `needs human check`.
 
+## PDF Extraction Strategy
+
+For PDF files, separate text extraction from reliability checking:
+
+1. Use MarkItDown first for ordinary text PDFs when available. It usually gives a fast, clean Markdown draft for LLM reading.
+2. Check the MarkItDown output for mojibake, replacement characters (`�`), missing expected CJK/text content, broken formulas/tables, and obvious scope loss.
+3. Run the bundled PDF inspector for page-level quality flags before creating a learning or review plan.
+4. Use Docling when MarkItDown output is empty, visibly incomplete, or the file is formula-heavy, image-heavy, chart-heavy, table-heavy, scanned, or layout-sensitive.
+5. Render flagged pages when formulas, diagrams, charts, private-use symbols, or image-dependent pages affect the explanation, diagnostic questions, or Anki backs.
+
+For ordinary PDFs, run:
+
+```powershell
+& "C:\Users\lenovo\.codex\tools\markitdown\Scripts\markitdown.exe" course.pdf > source-markitdown.md
+```
+
+Use `source-markitdown.md` as a first-pass reading source only when the output appears complete, readable, and consistent with the PDF's scope. Do not rely on it alone for formulas, diagrams, charts, or source-sensitive answers.
+
+Quick rejection signals:
+
+- high replacement-character count (`�`) or visible mojibake
+- very low expected Chinese/CJK text in a Chinese source
+- table rows filled with `?` or missing labels
+- formulas converted to private-use glyphs or unreadable symbols
+- output length that is implausibly small for the page count
+
+For slide-export or handout-style PDFs, render a few sample pages early. A single PDF page may contain multiple slide panels, so source tags should include both the PDF page and the visible panel or region, for example `pdf-p5-top-right` or `pdf-p5-slide-4-18`, not just `pdf-p5`.
+
 ## PDF Inspector
 
-For PDF files, prefer the bundled script before creating a learning or review plan:
+Run the bundled inspector before creating a learning or review plan:
 
 ```bash
 python scripts/inspect_pdf_source.py course.pdf --markdown-out source-report.md --json-out source-report.json --text-out source-text.txt
 ```
 
-Use the Markdown report to brief the user and the JSON report for exact page lists. Use the text output for topic mapping and question generation, but do not treat it as complete when the report flags sparse pages, private-use symbols, or image-dependent pages.
+Use the Markdown report to brief the user and the JSON report for exact page lists. Use the text output for page tags, topic mapping, and question generation, but do not treat it as complete when the report flags sparse pages, private-use symbols, or image-dependent pages.
 
 The inspector reports:
 
@@ -32,9 +60,40 @@ The inspector reports:
 - empty text pages
 - sparse text pages
 - private-use or suspect symbol pages
+- benign private-use bullet glyphs are ignored when they look like list markers
 - image-dependent sparse pages
 - Poppler command availability
 - per-page snippets and extracted text
+
+## Docling Fallback
+
+Use Docling when the PDF likely needs structure-aware extraction:
+
+- formulas or mathematical notation
+- images, figures, diagrams, or charts that carry meaning
+- complex tables
+- scanned or image-only pages
+- layout-sensitive material
+- empty or incomplete MarkItDown output
+
+Recommended command:
+
+```powershell
+$env:no_proxy = "127.0.0.1,localhost,127.0.0.0/8"
+$env:NO_PROXY = $env:no_proxy
+& "C:\Users\lenovo\.codex\tools\docling\Scripts\docling.exe" course.pdf --to md --image-export-mode referenced --enrich-formula --enrich-picture-description --enrich-chart-extraction --output docling-output
+```
+
+The `no_proxy` override avoids a Windows-local `httpx` parsing issue caused by bare IPv6 localhost entries such as `::1`.
+
+Use Docling's Markdown and referenced images as supplemental evidence. If the command is slow, retry with fewer enrichment flags before falling back to the normal PDF inspector plus rendered pages.
+
+For large slide-export PDFs or image-heavy course decks:
+
+- Do not run Docling over the whole file as the default fallback.
+- Prefer copying the PDF to an ASCII-only local path before running Docling if the original path contains non-ASCII characters.
+- Prefer running Docling on a split page range or small set of critical pages after the inspector identifies them.
+- If Docling reports page-count, memory, OCR, or temporary-file cleanup errors, treat it as unavailable for that source and continue with inspector text plus rendered page images.
 
 If `pdftoppm` is unavailable, state that visual rendering was not performed. For diagram-heavy or formula-heavy pages, keep `needs human check` until visual inspection or user confirmation.
 
@@ -106,6 +165,11 @@ After rendering, inspect the PNGs with the available image/vision capability bef
 ## Reliability Rules
 
 - Do not treat extracted text as complete when formulas, diagrams, tables, or symbols may be missing.
+- Do not treat MarkItDown or Docling output as high-fidelity visual reconstruction.
+- Prefer MarkItDown for ordinary text extraction, Docling for complex extraction, and rendered pages for visual verification.
+- Reject text extraction that is readable only as mojibake, even if the command exits successfully.
+- For large image-heavy PDFs, render and visually inspect critical pages before attempting broad OCR/Docling conversion.
+- For handout PDFs where one PDF page contains multiple slides, keep panel-level source tags for visual-derived explanations and cards.
 - Do not invent professor priorities from slide count alone.
 - If two pages or examples appear to conflict, preserve both and mark `needs human check`.
 - If a page has sparse text, say that visual inspection or user confirmation may be needed.

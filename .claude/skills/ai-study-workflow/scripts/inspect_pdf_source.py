@@ -22,6 +22,17 @@ LOGIC_SYMBOLS = {
     "": "right-arrow glyph",
     "": "double-arrow glyph",
     "": "negation glyph",
+    "\uf07e": "tilde / range glyph",
+    "\uf0b4": "multiplication candidate",
+    "\uf053": "summation candidate",
+}
+
+BENIGN_PRIVATE_GLYPHS = {
+    "\uf06c": "bullet glyph",
+    "\uf070": "triangle bullet glyph",
+    "\uf076": "diamond bullet glyph",
+    "\uf0a7": "square bullet glyph",
+    "\uf0fc": "check mark glyph",
 }
 
 
@@ -29,8 +40,16 @@ def normalize_ws(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def count_private_use(text: str) -> int:
-    return sum(1 for ch in text if "\ue000" <= ch <= "\uf8ff")
+def private_use_counts(text: str) -> tuple[int, int]:
+    suspect = 0
+    benign = 0
+    for ch in text:
+        if "\ue000" <= ch <= "\uf8ff":
+            if ch in BENIGN_PRIVATE_GLYPHS:
+                benign += 1
+            else:
+                suspect += 1
+    return suspect, benign
 
 
 def page_image_count(page: Any) -> int:
@@ -60,7 +79,7 @@ def inspect_pdf(path: Path, sparse_threshold: int) -> dict[str, Any]:
     for index, page in enumerate(reader.pages, start=1):
         raw_text = page.extract_text() or ""
         text = normalize_ws(raw_text)
-        private_count = count_private_use(raw_text)
+        private_count, benign_private_count = private_use_counts(raw_text)
         symbols = sorted({symbol for symbol in LOGIC_SYMBOLS if symbol in raw_text})
         image_count = page_image_count(page)
         flags = []
@@ -81,6 +100,7 @@ def inspect_pdf(path: Path, sparse_threshold: int) -> dict[str, Any]:
                 "char_count": len(text),
                 "image_count": image_count,
                 "private_use_count": private_count,
+                "benign_private_use_count": benign_private_count,
                 "symbol_glyphs": symbols,
                 "flags": flags,
                 "snippet": text[:240],
@@ -91,6 +111,8 @@ def inspect_pdf(path: Path, sparse_threshold: int) -> dict[str, Any]:
     empty_pages = [p["page"] for p in pages if "empty_text" in p["flags"]]
     sparse_pages = [p["page"] for p in pages if "sparse_text" in p["flags"]]
     private_pages = [p["page"] for p in pages if "private_use_symbols" in p["flags"]]
+    symbol_pages = [p["page"] for p in pages if "symbol_glyphs" in p["flags"]]
+    suspect_symbol_pages = sorted(set(private_pages) | set(symbol_pages))
     image_dependent_pages = [p["page"] for p in pages if "image_dependent" in p["flags"]]
 
     return {
@@ -105,10 +127,14 @@ def inspect_pdf(path: Path, sparse_threshold: int) -> dict[str, Any]:
         "empty_page_count": len(empty_pages),
         "sparse_page_count": len(sparse_pages),
         "private_use_page_count": len(private_pages),
+        "symbol_glyph_page_count": len(symbol_pages),
+        "suspect_symbol_page_count": len(suspect_symbol_pages),
         "image_dependent_page_count": len(image_dependent_pages),
         "empty_pages": empty_pages,
         "sparse_pages": sparse_pages,
         "private_use_pages": private_pages,
+        "symbol_glyph_pages": symbol_pages,
+        "suspect_symbol_pages": suspect_symbol_pages,
         "image_dependent_pages": image_dependent_pages,
         "pages": pages,
         "extracted_text": "\n".join(text_blocks),
@@ -142,20 +168,20 @@ def render_markdown(data: dict[str, Any], max_list: int) -> str:
         f"- Pages: {data['page_count']}",
         f"- Empty text pages: {data['empty_page_count']}",
         f"- Sparse text pages (< {data['sparse_threshold']} chars): {data['sparse_page_count']}",
-        f"- Private-use / suspect symbol pages: {data['private_use_page_count']}",
+        f"- Private-use / suspect symbol pages: {data['suspect_symbol_page_count']}",
         f"- Image-dependent sparse pages: {data['image_dependent_page_count']}",
         f"- Poppler available: pdfinfo={poppler['pdfinfo']}, pdftotext={poppler['pdftotext']}, pdftoppm={poppler['pdftoppm']}",
         "",
         "## Needs Human Check",
         "",
     ]
-    if data["empty_pages"] or data["sparse_pages"] or data["private_use_pages"] or data["image_dependent_pages"]:
+    if data["empty_pages"] or data["sparse_pages"] or data["suspect_symbol_pages"] or data["image_dependent_pages"]:
         lines.extend(
             [
                 "- Some pages are `needs human check` before final answers, formula derivations, or Anki card backs.",
                 f"- Empty text pages: {ranges(data['empty_pages'])}",
                 f"- Sparse text pages: {ranges(data['sparse_pages'])}",
-                f"- Suspect symbol pages: {ranges(data['private_use_pages'])}",
+                f"- Suspect symbol pages: {ranges(data['suspect_symbol_pages'])}",
                 f"- Image-dependent sparse pages: {ranges(data['image_dependent_pages'])}",
             ]
         )
@@ -187,6 +213,9 @@ def write_json(path: Path, data: dict[str, Any]) -> None:
 
 
 def main() -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("pdf", type=Path, help="PDF file to inspect")
     parser.add_argument("--json-out", type=Path, help="Write structured inspection JSON")

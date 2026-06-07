@@ -61,17 +61,37 @@ Use `references/quality-rubric.md` when deciding whether a workflow is effective
 
 Use `references/source-ingestion.md` when the user provides PDFs, slides, lecture notes, screenshots, OCR text, or mixed course materials.
 
-For PDF course material, prefer the PDF inspector before generating study content:
+For PDF course material, use extraction plus quality inspection before generating study content. For ordinary text PDFs, prefer MarkItDown as the first-pass Markdown extractor when available:
+
+```powershell
+& "C:\Users\lenovo\.codex\tools\markitdown\Scripts\markitdown.exe" course.pdf > source-markitdown.md
+```
+
+Then run the PDF inspector to check page-level extraction quality:
 
 ```bash
 python scripts/inspect_pdf_source.py course.pdf --markdown-out source-report.md --json-out source-report.json --text-out source-text.txt
 ```
 
-Then render pages that need visual checks:
+Use `source-markitdown.md` for clean first-pass reading only when it is complete and readable. Reject or downgrade MarkItDown output when it has mojibake, many replacement characters (`�`), almost no expected CJK/text content, broken tables/formulas, or obvious scope loss. In those cases, prefer `source-report.md` / `source-text.txt` for page tags, quality flags, and topic mapping.
+
+If the PDF contains formulas, charts, complex tables, scanned pages, or image-heavy content, use Docling as a fallback structured extractor. For large slide-export PDFs or image-heavy course decks, avoid running Docling over the whole file first; run it only on a copied ASCII-path file, a short page range/split PDF, or a small set of critical pages after the inspector identifies them:
+
+```powershell
+$env:no_proxy = "127.0.0.1,localhost,127.0.0.0/8"
+$env:NO_PROXY = $env:no_proxy
+& "C:\Users\lenovo\.codex\tools\docling\Scripts\docling.exe" course.pdf --to md --image-export-mode referenced --enrich-formula --enrich-picture-description --enrich-chart-extraction --output docling-output
+```
+
+If Docling fails, is slow, or reports memory/page-count errors, do not block the workflow. Fall back to inspector text plus rendered page images for the flagged pages.
+
+Render pages that still need visual checks:
 
 ```bash
 python scripts/render_pdf_pages.py course.pdf --from-report source-report.json --flag private_use_symbols --flag image_dependent --max-pages 10 --out-dir rendered-pages --manifest-out rendered-pages/manifest.json
 ```
+
+Do not treat MarkItDown or Docling output as visually complete. Keep formulas, diagrams, charts, and ambiguous pages as `needs human check` until checked against rendered pages or the original source.
 
 For PPTX course material, prefer the PPTX inspector before generating study content:
 

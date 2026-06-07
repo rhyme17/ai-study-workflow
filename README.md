@@ -124,6 +124,8 @@ card candidates:
 ## What It Does
 
 - Inspects PPTX and PDF course material before generating study content.
+- Uses MarkItDown for fast first-pass PDF Markdown extraction when the output is readable.
+- Uses Docling or rendered page images as fallback evidence for formula-heavy, visual, table-heavy, scanned, or incomplete PDF extraction.
 - Marks sparse, visual, formula-heavy, conflicting, or uncertain material as `needs human check`.
 - Starts review with closed-book diagnostics instead of summaries.
 - Supports new knowledge learning with prerequisite checks and chunked tutoring.
@@ -200,6 +202,12 @@ local-materials/course-files/
 
 That directory is ignored by Git.
 See [docs/usage-guide.md](docs/usage-guide.md) for full commands and examples.
+
+For ordinary PDFs, the workflow can use MarkItDown as the first-pass extractor when its
+output is readable, then run the bundled PDF inspector for page-level quality checks.
+Formula-heavy, visual, table-heavy, scanned, corrupted, or incomplete extractions should
+be checked with Docling and/or rendered page images before generating final explanations
+or Anki card backs.
 
 ## Validate the Skill Scripts
 

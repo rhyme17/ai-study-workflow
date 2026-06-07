@@ -154,7 +154,19 @@ python .\skills\ai-study-workflow\scripts\render_pptx_slides.py `
 
 ## 4. PDF 文件怎么处理
 
-PDF 优先检查文字抽取质量：
+PDF 建议分三层处理：普通文本先用 MarkItDown 快速抽 Markdown，随后用内置脚本检查页级质量；公式、图表、复杂表格或扫描页再用 Docling 或页面渲染补强。
+
+普通 PDF 先跑 MarkItDown：
+
+```powershell
+& "C:\Users\lenovo\.codex\tools\markitdown\Scripts\markitdown.exe" `
+  .\local-materials\course-files\course.pdf `
+  > .\local-materials\test-runs\pdf-markitdown.md
+```
+
+跑完后先看 `pdf-markitdown.md` 是否可读。如果出现大量乱码、`�`、表格全是 `?`、中文源文件几乎没有中文，或者公式/符号明显损坏，不要把它当作主要来源。
+
+然后检查文字抽取质量：
 
 ```powershell
 python .\skills\ai-study-workflow\scripts\inspect_pdf_source.py `
@@ -164,7 +176,22 @@ python .\skills\ai-study-workflow\scripts\inspect_pdf_source.py `
   --text-out .\local-materials\test-runs\pdf-text.txt
 ```
 
-如果报告显示公式、符号、图片页有问题，渲染页面：
+如果 MarkItDown 输出为空、乱码、明显漏内容，或者 PDF 包含公式、图片、图表、复杂表格、扫描页，可以用 Docling 补充结构化解析。对于很大的课件导出 PDF 或图片很多的 PDF，不要默认整本跑 Docling；先用检查报告挑少量关键页，必要时把 PDF 复制到纯英文路径或拆分页段后再跑。
+
+```powershell
+$env:no_proxy = "127.0.0.1,localhost,127.0.0.0/8"
+$env:NO_PROXY = $env:no_proxy
+& "C:\Users\lenovo\.codex\tools\docling\Scripts\docling.exe" `
+  .\local-materials\course-files\course.pdf `
+  --to md `
+  --image-export-mode referenced `
+  --enrich-formula `
+  --enrich-picture-description `
+  --enrich-chart-extraction `
+  --output .\local-materials\test-runs\docling-output
+```
+
+如果报告显示公式、符号、图片页有问题，继续渲染页面：
 
 ```powershell
 python .\skills\ai-study-workflow\scripts\render_pdf_pages.py `
@@ -176,7 +203,11 @@ python .\skills\ai-study-workflow\scripts\render_pdf_pages.py `
   --out-dir .\local-materials\test-runs\rendered-pages
 ```
 
-PDF 的关键点：公式和特殊符号不能只信文本抽取。被标记的页面要看渲染图。
+PDF 的关键点：MarkItDown 和 Docling 都是抽取/结构化工具，不是高保真视觉复原。公式、特殊符号、图表、视觉推导不能只信文本抽取；被标记的页面要看渲染图或回到原 PDF 核对。
+
+如果 Docling 报页数不一致、内存不足、OCR 失败或 Windows 临时文件占用，不要卡在转换上。直接使用 `pdf-report.md` / `pdf-text.txt` 建立章节地图，并渲染关键页让 Codex/GPT 识图。
+
+如果 PDF 是 handout 格式，一页里有多张 slide，先渲染几页确认版式。之后 source tag 不要只写 `pdf-p5`，要写成 `pdf-p5-top-right`、`pdf-p5-slide-4-18` 这类能定位到具体小页/区域的标签。
 
 ## 5. 使用一份网络课程 PPTX 的推荐流程
 
