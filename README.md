@@ -233,11 +233,16 @@ powershell -ExecutionPolicy Bypass -File scripts/sync-agent-skills.ps1
 
 ## Version
 
-Current prepared public version: `v0.1.0`.
+Current prepared public version: `v0.1.1`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes and
 [docs/repository-settings.md](docs/repository-settings.md) for recommended GitHub
 metadata, topics, and social preview settings.
+
+## Version History
+
+- `v0.1.1`: Improves PDF ingestion quality checks, especially for Chinese course PDFs, handout-style slide exports, and visual/formula-heavy pages.
+- `v0.1.0`: Initial public active-recall workflow with source inspection, closed-book diagnostics, weak-point repair, and Anki CSV guidance.
 
 ## License
 

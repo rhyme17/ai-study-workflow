@@ -54,23 +54,23 @@ assets/social-preview.png
 
 ## Release
 
-Recommended first release: `v0.1.0`.
+Recommended latest release: `v0.1.1`.
 
 Title:
 
 ```text
-v0.1.0 - Initial active-recall study workflow
+v0.1.1 - PDF ingestion quality checks
 ```
 
 ## Release Notes
 
 ```text
-Initial public version of ai-study-workflow.
+PDF ingestion quality update.
 
-- Reusable AI study workflow skill.
-- Source inspection workflow for PDFs/PPTX.
-- Closed-book diagnostic flow.
-- Weak-point repair flow.
-- Anki CSV generation guidance.
-- Examples and usage guide.
+- Added stricter quality checks for MarkItDown PDF output.
+- Documented fallback behavior for corrupted, visual, formula-heavy, scanned, and handout-style PDFs.
+- Improved Windows UTF-8 console handling in the PDF inspector.
+- Reduced false positives from benign private-use bullet glyphs in Chinese lecture PDFs.
+- Added guidance for panel-level source tags when one PDF page contains multiple slide panels.
+- Synced Codex and Claude Code skill copies with the canonical skill.
 ```
