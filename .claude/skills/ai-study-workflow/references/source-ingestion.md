@@ -191,7 +191,7 @@ For first-turn interactive use, keep the output shorter:
 
 - source card
 - mode chooser
-- one answer-free diagnostic or prerequisite task
+- for review, one answer-free diagnostic; for first-time learning, one small learning block plus a light check
 
 ## Interaction Rule
 

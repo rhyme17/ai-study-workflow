@@ -23,9 +23,9 @@ For a source-based first response, prefer a short "front door" instead of a full
 
 1. Source card: file type, scope, usable text, visual/uncertain caveats.
 2. Mode choice: learning, review, or material generation.
-3. One immediate task: a short diagnostic, prerequisite check, or first learning block.
+3. One immediate task: for review, a short diagnostic; for first-time learning, a tiny first learning block plus at most 1-2 low-stakes readiness questions.
 
-Do not expand both learning mode and review mode unless the user asks for both. Keep the first task answer-free; ask the student to respond before revealing solutions.
+Do not expand both learning mode and review mode unless the user asks for both. Keep review diagnostics answer-free; in first-time learning, do not make the student answer a long prerequisite quiz before teaching the first chunk.
 
 ## Operating Rules
 
@@ -123,4 +123,4 @@ Response path: review mode -> course triage -> closed-book diagnostic -> weak-po
 
 User: "我想从零学贝叶斯公式。"
 
-Response path: learning mode -> prerequisite check -> concept map -> worked example -> Socratic check -> transfer problem -> spaced review cards.
+Response path: learning mode -> compact concept skeleton -> first small learning block -> one quick check -> near variant -> transfer problem -> spaced review cards.

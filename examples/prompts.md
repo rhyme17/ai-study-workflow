@@ -21,8 +21,8 @@ Do not reveal answers until I respond.
 
 ```text
 使用 ai-study-workflow，读取这个课件。我走新知识学习模式。
-请先给章节骨架和 3-5 个前置检查问题。
-不要直接长篇讲解，等我回答后再决定讲哪些。
+我还没学过。请先给章节骨架，然后讲第一个最小知识块。
+最多问我 1 个快速检查问题，不要一开始考我一串题。
 ```
 
 ## Visual Slide Review

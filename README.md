@@ -128,7 +128,7 @@ card candidates:
 - Uses Docling or rendered page images as fallback evidence for formula-heavy, visual, table-heavy, scanned, or incomplete PDF extraction.
 - Marks sparse, visual, formula-heavy, conflicting, or uncertain material as `needs human check`.
 - Starts review with closed-book diagnostics instead of summaries.
-- Supports new knowledge learning with prerequisite checks and chunked tutoring.
+- Supports new knowledge learning with gentle readiness checks and chunked tutoring.
 - Generates targeted drills, mistake taxonomies, and Anki-ready CSV files.
 - Renders PPTX slides or PDF pages to PNG when visual inspection is needed.
 

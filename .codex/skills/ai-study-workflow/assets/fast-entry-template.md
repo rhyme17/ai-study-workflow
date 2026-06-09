@@ -16,9 +16,8 @@
 
 ## Start Now
 
-Answer these first. Do not look at the notes while answering.
+If this is exam review, answer these first without looking at the notes.
+If this is first-time learning, start with the first learning block and answer only one quick check.
 
 1.
 2.
-3.
-4.

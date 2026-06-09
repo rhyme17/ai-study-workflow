@@ -5,7 +5,7 @@ Use this rubric to judge whether a study workflow is likely to improve outcomes.
 ## Strong Workflow
 
 - Starts with a source-quality pass when files are provided.
-- Starts from a diagnostic or prerequisite check.
+- Starts review from a diagnostic, and starts first-time learning from a small teachable chunk plus a light readiness check.
 - Makes the student answer before showing model answers.
 - Uses active recall, practice testing, and spaced review.
 - Converts mistakes into source-tagged cards.

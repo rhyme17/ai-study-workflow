@@ -5,7 +5,7 @@ Use these prompts with allowed course materials only.
 ## Fast Source Entry
 
 ```text
-Use the provided course file to create a fast study entry. First give a compact source card with scope, extraction quality, and visual-check caveats. Then offer exactly three choices: new learning, exam review, or material generation. Recommend one choice based on the user's goal. End with one answer-free task: either 3-5 prerequisite questions or 6-10 closed-book diagnostic questions. Do not show answers yet.
+Use the provided course file to create a fast study entry. First give a compact source card with scope, extraction quality, and visual-check caveats. Then offer exactly three choices: new learning, exam review, or material generation. Recommend one choice based on the user's goal. If the user chooses new learning and has not studied the topic, start with one tiny learning block and at most 1-2 low-stakes readiness questions. If the user chooses exam review, end with 6-10 closed-book diagnostic questions and do not show answers yet.
 ```
 
 ## Course Triage
@@ -35,7 +35,7 @@ Grade my answer against the rubric or scoring criteria. Separate feedback into c
 ## New Knowledge Map
 
 ```text
-Help me learn this topic from my current level. First list prerequisites and ask a short check. Then make a compact concept map and common confusions. For the near practice problem and transfer problem, stop after the question and wait for my answer before revealing the solution.
+Help me learn this topic from scratch. First give a compact concept skeleton and teach the first small block in plain language. Ask at most one quick check before continuing. Do not start with a long prerequisite quiz unless I say I have already learned this topic or ask to be tested. For the near practice problem and transfer problem, stop after the question and wait for my answer before revealing the solution.
 ```
 
 ## Anti-Dependency Check
